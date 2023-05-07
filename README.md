@@ -1,18 +1,10 @@
-## GROUP: T3G1
+# A Compiler tool for J-- Language
 
-- Diana Freitas, NUMBER: up201806230, GRADE: 19, CONTRIBUTION: 25%
-- Diogo Fernandes, NUMBER: up201806250, GRADE: 19, CONTRIBUTION: 25%
-- Hugo Guimarães, NUMBER: up201806490, GRADE: 19, CONTRIBUTION: 25%
-- Juliane Marubayashi, NUMBER: up201800175, GRADE: 19, CONTRIBUTION: 25%
+A compiler, named jmm, which translates programs in Java--* into java bytecodes. It can be executed using the [jasmin library](http://jasmin.sourceforge.net/) and also has options for code optimization, which can be applied by making use of the `-o` and `-r=x` options.
 
-GLOBAL Grade of the project: 19
+**Based on the MiniJava proposed in Appel and Palsberg's“Modern Compiler Implementation in Java”, 2ndEdi-tion, pages 484-486*
 
-### Summary:
-This project consists in a compiler tool to parse the J-- language for java bytecode, which can be executed using the [jasmin library](http://jasmin.sourceforge.net/).   
-This tool also has options for code optimization, which can be applied making use of the `-o` and `-r=x` options.
-
-
-### Dealing with syntatic errors:
+## Dealing with syntatic errors:
 The syntatic error recovering was applied for while statments. The following code shows the recovery is done:
 
 ```java 
@@ -51,7 +43,7 @@ This process is done to maximize the number of errors displayed for the programm
 
 
 
-### Semantic Analysis: (Refer the semantic rules implemented by your tool.)
+## Semantic Analysis: (Refer the semantic rules implemented by your tool.)
 The goals of the Semantic Analysis are to verify if the program is according to the definitions of the programming language, by reporting the semantic errors with useful messages to the user.
 
 Our compiler implments the following semantic rules:
@@ -79,18 +71,18 @@ Our compiler implments the following semantic rules:
 Builtin "length" only exists over arrays.
 
 
-### Code Generation: (describe how the code generation of your tool works and identify the possible problems your tool has regarding code generation.)
+## Code Generation: (describe how the code generation of your tool works and identify the possible problems your tool has regarding code generation.)
 
-#### OLLIR Generation
+### OLLIR Generation
 The AST is recursively converted to OLLIR (Optimized Low-Level Intermediate Representation).
 We created the class OllirEmitter, in which there is a function for converting each type of expression and statement. Auxiliar variables are created when necessary.
 
 The optimizations we did to the code were the following:
-##### Constant Propagation:
+#### Constant Propagation:
 Before generating the Ollir code, a ConstantPropagationVisitor, which extends the AJmmVisitor, was used to replace the values of constants in expressions.
 This visitor is applied until there are no changes in the AST.
 
-##### While loops
+#### While loops
 
 Example of an optimized While Loop:
 
@@ -103,7 +95,7 @@ endLoop:
     codeBlock
 ```
 
-#### Jasmin Generation
+### Jasmin Generation
 
 All the jasmin basic structure is being generate including the constructor, fields and methods.
 
@@ -129,22 +121,22 @@ The approachs for defining each one of them is well defined:
 In other words, each instruction contributes for the variation of the stack size. This variation is computed in the `currentSize` variable, while the jasmin is being produced. However, in the end the max size for the variable is saved in the `maxUntilNow` variable.
 By using this algorithm, it's possible to calculate the limit stack in an efficient way.
 
-### Optimization -r
+## Optimization -r
 The optimization -r is a process that contains three types of algorithms:
 - The dataflow analysis
 - Calculating the liverange and the interferences between variables
 - Apply the coloring graph
 
 About the -r optimization it's important to discuss some aspects that might defeer from other works of this subject.
-#### Live range
+### Live range
 The concept of live ranging and how to calculate is one of the aspects that we think that might be controversial. In our project we consider that the live range is the all the instructions between the first `definition` of the variable and the last `in` of it.
 The `in` was calculated in the process of dataflow.
 
-#### Coloring heuristic
+### Coloring heuristic
 The coloring heuristics follows the algorithm apresented in the theorical classes: Kempe’s graph-coloring algorithm. The algorithm can be checked in this [link](https://www.cs.princeton.edu/~appel/Color.pdf).
 
 
-### Task Distribution:
+## Task Distribution:
 - __Checkpoint 1__:
   The first checkpoint was made in group by pair programming and sharing between the members using tools such as `code with me` from IntelliJ.
 - __Checkpoint 2__:
@@ -159,10 +151,16 @@ The coloring heuristics follows the algorithm apresented in the theorical classe
     - __-r optimization__: Juliane Marubayashi
 
 
-### PROS:
+## PROS:
 We did everything that was suppose to do, trying to always use the best design patterns to make the code modular and easy to understand. We also did the optimizations -o and -r.
 
 
-### CONS:
+## CONS:
 We don't sanitize the variables. For example, 'array' and '$' are reserved in OLLIR and if the code has these variables it will break and OLLIR will not run.  
 The -r optimization could be better when showing error messages. Once it's not possible to make the graph coloring for certain number of registers the code generation is interrupted by an `OPTIMIZER` exception. However in some cases that the number of register is too low, another error might appear, which does not describe correctly the nature of the exception.  
+
+## Collaborators
+- [Diana Freitas](https://github.com/dianaamfr)
+- [Diogo Samuel Fernandes](https://github.com/Samuuuh)
+- [Hugo Guimarães](https://github.com/Hugomguima)
+- [Juliane Marubayashi](https://github.com/Jumaruba)
